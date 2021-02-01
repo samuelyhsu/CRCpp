@@ -1,10 +1,10 @@
 /**
-    @file CRC.h
+    @file Crc.h
     @author Daniel Bahr
     @version 1.0.1.0
     @copyright
     @parblock
-        CRC++
+        Crc++
         Copyright (c) 2020, Daniel Bahr
         All rights reserved.
 
@@ -19,7 +19,7 @@
    notice, this list of conditions and the following disclaimer in the
    documentation and/or other materials provided with the distribution.
 
-        * Neither the name of CRC++ nor the names of its
+        * Neither the name of Crc++ nor the names of its
           contributors may be used to endorse or promote products derived from
           this software without specific prior written permission.
 
@@ -38,25 +38,25 @@
 */
 
 /*
-    CRC++ can be configured by setting various #defines before #including this
+    Crc++ can be configured by setting various #defines before #including this
    header file:
 
         #define crcpp_uint8                             - Specifies the type
    used to store CRCs that have a width of 8 bits or less. This type is not used
-   in CRC calculations. Defaults to ::std::uint8_t. #define crcpp_uint16 -
+   in Crc calculations. Defaults to ::std::uint8_t. #define crcpp_uint16 -
    Specifies the type used to store CRCs that have a width between 9 and 16 bits
-   (inclusive). This type is not used in CRC calculations. Defaults to
+   (inclusive). This type is not used in Crc calculations. Defaults to
    ::std::uint16_t. #define crcpp_uint32                            - Specifies
    the type used to store CRCs that have a width between 17 and 32 bits
-   (inclusive). This type is not used in CRC calculations. Defaults to
+   (inclusive). This type is not used in Crc calculations. Defaults to
    ::std::uint32_t. #define crcpp_uint64                            - Specifies
    the type used to store CRCs that have a width between 33 and 64 bits
-   (inclusive). This type is not used in CRC calculations. Defaults to
+   (inclusive). This type is not used in Crc calculations. Defaults to
    ::std::uint64_t. #define crcpp_size                              - This type
    is used for loop iteration and function signatures only. Defaults to
    ::std::size_t. #define CRCPP_USE_NAMESPACE                     - Define to
-   place all CRC++ code within the ::CRCPP namespace. #define CRCPP_BRANCHLESS
-   - Define to enable a branchless CRC implementation. The branchless
+   place all Crc++ code within the ::CRCPP namespace. #define CRCPP_BRANCHLESS
+   - Define to enable a branchless Crc implementation. The branchless
    implementation uses a single integer multiplication in the bit-by-bit
    calculation instead of a small conditional. The branchless implementation may
    be faster on processor architectures which support single-instruction integer
@@ -69,6 +69,7 @@
 #ifndef CRCPP_CRC_H_
 #define CRCPP_CRC_H_
 
+//#define CRCPP_USE_NAMESPACE
 #define CRCPP_USE_CPP11
 
 #include <climits> // Includes CHAR_BIT
@@ -161,31 +162,31 @@ namespace CRCPP
      C++11, the constexpr keyword is used liberally so that many calculations
      are performed at compile-time instead of at runtime.
   */
-  class CRC
+  class Crc
   {
   public:
     // Forward declaration
     template <typename CRCType, crcpp_uint16 CRCWidth> struct Table;
 
     /**
-        @brief CRC parameters.
+        @brief Crc parameters.
     */
     template <typename CRCType, crcpp_uint16 CRCWidth> struct Parameters
     {
-      CRCType polynomial;   ///< CRC polynomial
-      CRCType initialValue; ///< Initial CRC value
-      CRCType finalXOR;     ///< Value to XOR with the final CRC
+      CRCType polynomial;   ///< Crc polynomial
+      CRCType initialValue; ///< Initial Crc value
+      CRCType finalXOR;     ///< Value to XOR with the final Crc
       bool reflectInput;    ///< true to reflect all input bytes
-      bool reflectOutput; ///< true to reflect the output CRC (reflection occurs
+      bool reflectOutput; ///< true to reflect the output Crc (reflection occurs
                           ///< before the final XOR)
 
       Table<CRCType, CRCWidth> MakeTable() const;
     };
 
     /**
-        @brief CRC lookup table. After construction, the CRC parameters are
+        @brief Crc lookup table. After construction, the Crc parameters are
        fixed.
-        @note A CRC table can be used for multiple CRC calculations.
+        @note A Crc table can be used for multiple Crc calculations.
     */
     template <typename CRCType, crcpp_uint16 CRCWidth> struct Table
     {
@@ -206,8 +207,8 @@ namespace CRCPP
       void InitTable();
 
       Parameters<CRCType, CRCWidth>
-          parameters; ///< CRC parameters used to construct the table
-      CRCType table[1 << CHAR_BIT]; ///< CRC lookup table
+          parameters; ///< Crc parameters used to construct the table
+      CRCType table[1 << CHAR_BIT]; ///< Crc lookup table
     };
 
     // The number of bits in CRCType must be at least as large as CRCWidth.
@@ -301,18 +302,18 @@ namespace CRCPP
 #endif
 
 #ifdef CRCPP_USE_CPP11
-    CRC() = delete;
-    CRC(const CRC &other) = delete;
-    CRC &operator=(const CRC &other) = delete;
-    CRC(CRC &&other) = delete;
-    CRC &operator=(CRC &&other) = delete;
+    Crc() = delete;
+    Crc(const Crc &other) = delete;
+    Crc &operator=(const Crc &other) = delete;
+    Crc(Crc &&other) = delete;
+    Crc &operator=(Crc &&other) = delete;
 #endif
 
   private:
 #ifndef CRCPP_USE_CPP11
-    CRC();
-    CRC(const CRC &other);
-    CRC &operator=(const CRC &other);
+    Crc();
+    Crc(const Crc &other);
+    Crc &operator=(const Crc &other);
 #endif
 
     template <typename IntegerType>
@@ -340,30 +341,30 @@ namespace CRCPP
   };
 
   /**
-      @brief Returns a CRC lookup table construct using these CRC parameters.
+      @brief Returns a Crc lookup table construct using these Crc parameters.
       @note This function primarily exists to allow use of the auto keyword
      instead of instantiating a table directly, since template parameters are
      not inferred in constructors.
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC lookup table
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc lookup table
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRC::Table<CRCType, CRCWidth>
-  CRC::Parameters<CRCType, CRCWidth>::MakeTable() const
+  inline Crc::Table<CRCType, CRCWidth>
+  Crc::Parameters<CRCType, CRCWidth>::MakeTable() const
   {
     // This should take advantage of RVO and optimize out the copy.
-    return CRC::Table<CRCType, CRCWidth>(*this);
+    return Crc::Table<CRCType, CRCWidth>(*this);
   }
 
   /**
-      @brief Constructs a CRC table from a set of CRC parameters
-      @param[in] params CRC parameters
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
+      @brief Constructs a Crc table from a set of Crc parameters
+      @param[in] params Crc parameters
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRC::Table<CRCType, CRCWidth>::Table(
+  inline Crc::Table<CRCType, CRCWidth>::Table(
       const Parameters<CRCType, CRCWidth> &params)
       : parameters(params)
   {
@@ -372,13 +373,13 @@ namespace CRCPP
 
 #ifdef CRCPP_USE_CPP11
   /**
-      @brief Constructs a CRC table from a set of CRC parameters
-      @param[in] params CRC parameters
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
+      @brief Constructs a Crc table from a set of Crc parameters
+      @param[in] params Crc parameters
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRC::Table<CRCType, CRCWidth>::Table(
+  inline Crc::Table<CRCType, CRCWidth>::Table(
       Parameters<CRCType, CRCWidth> &&params)
       : parameters(::std::move(params))
   {
@@ -387,53 +388,53 @@ namespace CRCPP
 #endif
 
   /**
-      @brief Gets the CRC parameters used to construct the CRC table
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC parameters
+      @brief Gets the Crc parameters used to construct the Crc table
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc parameters
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline const CRC::Parameters<CRCType, CRCWidth> &
-  CRC::Table<CRCType, CRCWidth>::GetParameters() const
+  inline const Crc::Parameters<CRCType, CRCWidth> &
+  Crc::Table<CRCType, CRCWidth>::GetParameters() const
   {
     return parameters;
   }
 
   /**
-      @brief Gets the CRC table
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC table
+      @brief Gets the Crc table
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc table
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline const CRCType *CRC::Table<CRCType, CRCWidth>::GetTable() const
+  inline const CRCType *Crc::Table<CRCType, CRCWidth>::GetTable() const
   {
     return table;
   }
 
   /**
-      @brief Gets an entry in the CRC table
-      @param[in] index Index into the CRC table
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC table entry
+      @brief Gets an entry in the Crc table
+      @param[in] index Index into the Crc table
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc table entry
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
   inline CRCType
-  CRC::Table<CRCType, CRCWidth>::operator[](unsigned char index) const
+  Crc::Table<CRCType, CRCWidth>::operator[](unsigned char index) const
   {
     return table[index];
   }
 
   /**
-      @brief Initializes a CRC table.
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
+      @brief Initializes a Crc table.
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline void CRC::Table<CRCType, CRCWidth>::InitTable()
+  inline void Crc::Table<CRCType, CRCWidth>::InitTable()
   {
-    // For masking off the bits for the CRC (in the event that the number of
+    // For masking off the bits for the Crc (in the event that the number of
     // bits in CRCType is larger than CRCWidth)
     static crcpp_constexpr CRCType BIT_MASK(
         (CRCType(1) << (CRCWidth - CRCType(1))) |
@@ -451,11 +452,11 @@ namespace CRCPP
     // char)
     do
     {
-      crc = CRC::CalculateRemainder<CRCType, CRCWidth>(&byte, sizeof(byte),
+      crc = Crc::CalculateRemainder<CRCType, CRCWidth>(&byte, sizeof(byte),
                                                        parameters, CRCType(0));
 
       // This mask might not be necessary; all unit tests pass with this line
-      // commented out, but that might just be a coincidence based on the CRC
+      // commented out, but that might just be a coincidence based on the Crc
       // parameters used for testing. In any case, this is harmless to leave in
       // and only adds a single machine instruction per loop iteration.
       crc &= BIT_MASK;
@@ -472,16 +473,16 @@ namespace CRCPP
   }
 
   /**
-      @brief Computes a CRC.
-      @param[in] data Data over which CRC will be computed
+      @brief Computes a Crc.
+      @param[in] data Data over which Crc will be computed
       @param[in] size Size of the data
-      @param[in] parameters CRC parameters
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC
+      @param[in] parameters Crc parameters
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRCType CRC::Calculate(const void *data, crcpp_size size,
+  inline CRCType Crc::Calculate(const void *data, crcpp_size size,
                                 const Parameters<CRCType, CRCWidth> &parameters)
   {
     CRCType remainder =
@@ -495,18 +496,18 @@ namespace CRCPP
                                            parameters.reflectOutput);
   }
   /**
-      @brief Appends additional data to a previous CRC calculation.
+      @brief Appends additional data to a previous Crc calculation.
       @note This function can be used to compute multi-part CRCs.
-      @param[in] data Data over which CRC will be computed
+      @param[in] data Data over which Crc will be computed
       @param[in] size Size of the data
-      @param[in] parameters CRC parameters
-      @param[in] crc CRC from a previous calculation
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC
+      @param[in] parameters Crc parameters
+      @param[in] crc Crc from a previous calculation
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRCType CRC::Calculate(const void *data, crcpp_size size,
+  inline CRCType Crc::Calculate(const void *data, crcpp_size size,
                                 const Parameters<CRCType, CRCWidth> &parameters,
                                 CRCType crc)
   {
@@ -525,16 +526,16 @@ namespace CRCPP
   }
 
   /**
-      @brief Computes a CRC via a lookup table.
-      @param[in] data Data over which CRC will be computed
+      @brief Computes a Crc via a lookup table.
+      @param[in] data Data over which Crc will be computed
       @param[in] size Size of the data
-      @param[in] lookupTable CRC lookup table
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC
+      @param[in] lookupTable Crc lookup table
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRCType CRC::Calculate(const void *data, crcpp_size size,
+  inline CRCType Crc::Calculate(const void *data, crcpp_size size,
                                 const Table<CRCType, CRCWidth> &lookupTable)
   {
     const Parameters<CRCType, CRCWidth> &parameters =
@@ -552,19 +553,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Appends additional data to a previous CRC calculation using a
+      @brief Appends additional data to a previous Crc calculation using a
      lookup table.
       @note This function can be used to compute multi-part CRCs.
-      @param[in] data Data over which CRC will be computed
+      @param[in] data Data over which Crc will be computed
       @param[in] size Size of the data
-      @param[in] lookupTable CRC lookup table
-      @param[in] crc CRC from a previous calculation
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC
+      @param[in] lookupTable Crc lookup table
+      @param[in] crc Crc from a previous calculation
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRCType CRC::Calculate(const void *data, crcpp_size size,
+  inline CRCType Crc::Calculate(const void *data, crcpp_size size,
                                 const Table<CRCType, CRCWidth> &lookupTable,
                                 CRCType crc)
   {
@@ -593,7 +594,7 @@ namespace CRCPP
       @return Reflected value
   */
   template <typename IntegerType>
-  inline IntegerType CRC::Reflect(IntegerType value, crcpp_uint16 numBits)
+  inline IntegerType Crc::Reflect(IntegerType value, crcpp_uint16 numBits)
   {
     IntegerType reversedValue(0);
 
@@ -608,20 +609,20 @@ namespace CRCPP
   }
 
   /**
-      @brief Computes the final reflection and XOR of a CRC remainder.
-      @param[in] remainder CRC remainder to reflect and XOR
+      @brief Computes the final reflection and XOR of a Crc remainder.
+      @param[in] remainder Crc remainder to reflect and XOR
       @param[in] finalXOR Final value to XOR with the remainder
       @param[in] reflectOutput true to reflect each byte of the remainder before
      the XOR
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return Final CRC
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Final Crc
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRCType CRC::Finalize(CRCType remainder, CRCType finalXOR,
+  inline CRCType Crc::Finalize(CRCType remainder, CRCType finalXOR,
                                bool reflectOutput)
   {
-    // For masking off the bits for the CRC (in the event that the number of
+    // For masking off the bits for the Crc (in the event that the number of
     // bits in CRCType is larger than CRCWidth)
     static crcpp_constexpr CRCType BIT_MASK =
         (CRCType(1) << (CRCWidth - CRCType(1))) |
@@ -637,7 +638,7 @@ namespace CRCPP
 
   /**
       @brief Undoes the process of computing the final reflection and XOR of a
-     CRC remainder.
+     Crc remainder.
       @note This function allows for computation of multi-part CRCs
       @note Calling UndoFinalize() followed by Finalize() (or vice versa) will
      always return the original remainder value:
@@ -647,18 +648,18 @@ namespace CRCPP
           CRCType z = UndoFinalize(y, finalXOR, reflectOutput);
           assert(x == z);
 
-      @param[in] crc Reflected and XORed CRC
+      @param[in] crc Reflected and XORed Crc
       @param[in] finalXOR Final value XORed with the remainder
       @param[in] reflectOutput true if the remainder is to be reflected
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return Un-finalized CRC remainder
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Un-finalized Crc remainder
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
-  inline CRCType CRC::UndoFinalize(CRCType crc, CRCType finalXOR,
+  inline CRCType Crc::UndoFinalize(CRCType crc, CRCType finalXOR,
                                    bool reflectOutput)
   {
-    // For masking off the bits for the CRC (in the event that the number of
+    // For masking off the bits for the Crc (in the event that the number of
     // bits in CRCType is larger than CRCWidth)
     static crcpp_constexpr CRCType BIT_MASK =
         (CRCType(1) << (CRCWidth - CRCType(1))) |
@@ -675,19 +676,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Computes a CRC remainder.
+      @brief Computes a Crc remainder.
       @param[in] data Data over which the remainder will be computed
       @param[in] size Size of the data
-      @param[in] parameters CRC parameters
-      @param[in] remainder Running CRC remainder. Can be an initial value or the
-     result of a previous CRC remainder calculation.
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC remainder
+      @param[in] parameters Crc parameters
+      @param[in] remainder Running Crc remainder. Can be an initial value or the
+     result of a previous Crc remainder calculation.
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc remainder
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
   inline CRCType
-  CRC::CalculateRemainder(const void *data, crcpp_size size,
+  Crc::CalculateRemainder(const void *data, crcpp_size size,
                           const Parameters<CRCType, CRCWidth> &parameters,
                           CRCType remainder)
   {
@@ -696,7 +697,7 @@ namespace CRCPP
     // compiled in no matter what the template parameters are and whether or not
     // a table lookup or bit-by-bit algorithm is used.
     static_assert(::std::numeric_limits<CRCType>::digits >= CRCWidth,
-                  "CRCType is too small to contain a CRC of width CRCWidth.");
+                  "CRCType is too small to contain a Crc of width CRCWidth.");
 #else
   // Catching this compile-time error is very important. Sadly, the compiler
   // error will be very cryptic, but it's better than nothing.
@@ -715,7 +716,7 @@ namespace CRCPP
     // (looping over each bit) as possible.
     if (parameters.reflectInput)
     {
-      CRCType polynomial = CRC::Reflect(parameters.polynomial, CRCWidth);
+      CRCType polynomial = Crc::Reflect(parameters.polynomial, CRCWidth);
       while (size--)
       {
         remainder = static_cast<CRCType>(remainder ^ *current++);
@@ -827,19 +828,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Computes a CRC remainder using lookup table.
+      @brief Computes a Crc remainder using lookup table.
       @param[in] data Data over which the remainder will be computed
       @param[in] size Size of the data
-      @param[in] lookupTable CRC lookup table
-      @param[in] remainder Running CRC remainder. Can be an initial value or the
-     result of a previous CRC remainder calculation.
-      @tparam CRCType Integer type for storing the CRC result
-      @tparam CRCWidth Number of bits in the CRC
-      @return CRC remainder
+      @param[in] lookupTable Crc lookup table
+      @param[in] remainder Running Crc remainder. Can be an initial value or the
+     result of a previous Crc remainder calculation.
+      @tparam CRCType Integer type for storing the Crc result
+      @tparam CRCWidth Number of bits in the Crc
+      @return Crc remainder
   */
   template <typename CRCType, crcpp_uint16 CRCWidth>
   inline CRCType
-  CRC::CalculateRemainder(const void *data, crcpp_size size,
+  Crc::CalculateRemainder(const void *data, crcpp_size size,
                           const Table<CRCType, CRCWidth> &lookupTable,
                           CRCType remainder)
   {
@@ -907,19 +908,19 @@ namespace CRCPP
 
 #ifdef CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
   /**
-      @brief Returns a set of parameters for CRC-4 ITU.
+      @brief Returns a set of parameters for Crc-4 ITU.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-4 ITU has the following parameters and check value:
+      @note Crc-4 ITU has the following parameters and check value:
           - polynomial     = 0x3
           - initial value  = 0x0
           - final XOR      = 0x0
           - reflect input  = true
           - reflect output = true
           - check value    = 0x7
-      @return CRC-4 ITU parameters
+      @return Crc-4 ITU parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 4> &CRC::CRC_4_ITU()
+  inline const Crc::Parameters<crcpp_uint8, 4> &Crc::CRC_4_ITU()
   {
     static const Parameters<crcpp_uint8, 4> parameters = {0x3, 0x0, 0x0, true,
                                                           true};
@@ -927,19 +928,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-5 EPC.
+      @brief Returns a set of parameters for Crc-5 EPC.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-5 EPC has the following parameters and check value:
+      @note Crc-5 EPC has the following parameters and check value:
           - polynomial     = 0x09
           - initial value  = 0x09
           - final XOR      = 0x00
           - reflect input  = false
           - reflect output = false
           - check value    = 0x00
-      @return CRC-5 EPC parameters
+      @return Crc-5 EPC parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 5> &CRC::CRC_5_EPC()
+  inline const Crc::Parameters<crcpp_uint8, 5> &Crc::CRC_5_EPC()
   {
     static const Parameters<crcpp_uint8, 5> parameters = {0x09, 0x09, 0x00,
                                                           false, false};
@@ -947,19 +948,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-5 ITU.
+      @brief Returns a set of parameters for Crc-5 ITU.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-5 ITU has the following parameters and check value:
+      @note Crc-5 ITU has the following parameters and check value:
           - polynomial     = 0x15
           - initial value  = 0x00
           - final XOR      = 0x00
           - reflect input  = true
           - reflect output = true
           - check value    = 0x07
-      @return CRC-5 ITU parameters
+      @return Crc-5 ITU parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 5> &CRC::CRC_5_ITU()
+  inline const Crc::Parameters<crcpp_uint8, 5> &Crc::CRC_5_ITU()
   {
     static const Parameters<crcpp_uint8, 5> parameters = {0x15, 0x00, 0x00,
                                                           true, true};
@@ -967,19 +968,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-5 USB.
+      @brief Returns a set of parameters for Crc-5 USB.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-5 USB has the following parameters and check value:
+      @note Crc-5 USB has the following parameters and check value:
           - polynomial     = 0x05
           - initial value  = 0x1F
           - final XOR      = 0x1F
           - reflect input  = true
           - reflect output = true
           - check value    = 0x19
-      @return CRC-5 USB parameters
+      @return Crc-5 USB parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 5> &CRC::CRC_5_USB()
+  inline const Crc::Parameters<crcpp_uint8, 5> &Crc::CRC_5_USB()
   {
     static const Parameters<crcpp_uint8, 5> parameters = {0x05, 0x1F, 0x1F,
                                                           true, true};
@@ -987,19 +988,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-6 CDMA2000-A.
+      @brief Returns a set of parameters for Crc-6 CDMA2000-A.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-6 CDMA2000-A has the following parameters and check value:
+      @note Crc-6 CDMA2000-A has the following parameters and check value:
           - polynomial     = 0x27
           - initial value  = 0x3F
           - final XOR      = 0x00
           - reflect input  = false
           - reflect output = false
           - check value    = 0x0D
-      @return CRC-6 CDMA2000-A parameters
+      @return Crc-6 CDMA2000-A parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 6> &CRC::CRC_6_CDMA2000A()
+  inline const Crc::Parameters<crcpp_uint8, 6> &Crc::CRC_6_CDMA2000A()
   {
     static const Parameters<crcpp_uint8, 6> parameters = {0x27, 0x3F, 0x00,
                                                           false, false};
@@ -1007,19 +1008,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-6 CDMA2000-B.
+      @brief Returns a set of parameters for Crc-6 CDMA2000-B.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-6 CDMA2000-A has the following parameters and check value:
+      @note Crc-6 CDMA2000-A has the following parameters and check value:
           - polynomial     = 0x07
           - initial value  = 0x3F
           - final XOR      = 0x00
           - reflect input  = false
           - reflect output = false
           - check value    = 0x3B
-      @return CRC-6 CDMA2000-B parameters
+      @return Crc-6 CDMA2000-B parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 6> &CRC::CRC_6_CDMA2000B()
+  inline const Crc::Parameters<crcpp_uint8, 6> &Crc::CRC_6_CDMA2000B()
   {
     static const Parameters<crcpp_uint8, 6> parameters = {0x07, 0x3F, 0x00,
                                                           false, false};
@@ -1027,19 +1028,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-6 ITU.
+      @brief Returns a set of parameters for Crc-6 ITU.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-6 ITU has the following parameters and check value:
+      @note Crc-6 ITU has the following parameters and check value:
           - polynomial     = 0x03
           - initial value  = 0x00
           - final XOR      = 0x00
           - reflect input  = true
           - reflect output = true
           - check value    = 0x06
-      @return CRC-6 ITU parameters
+      @return Crc-6 ITU parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 6> &CRC::CRC_6_ITU()
+  inline const Crc::Parameters<crcpp_uint8, 6> &Crc::CRC_6_ITU()
   {
     static const Parameters<crcpp_uint8, 6> parameters = {0x03, 0x00, 0x00,
                                                           true, true};
@@ -1047,19 +1048,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-7 JEDEC.
+      @brief Returns a set of parameters for Crc-7 JEDEC.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-7 JEDEC has the following parameters and check value:
+      @note Crc-7 JEDEC has the following parameters and check value:
           - polynomial     = 0x09
           - initial value  = 0x00
           - final XOR      = 0x00
           - reflect input  = false
           - reflect output = false
           - check value    = 0x75
-      @return CRC-7 JEDEC parameters
+      @return Crc-7 JEDEC parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 7> &CRC::CRC_7()
+  inline const Crc::Parameters<crcpp_uint8, 7> &Crc::CRC_7()
   {
     static const Parameters<crcpp_uint8, 7> parameters = {0x09, 0x00, 0x00,
                                                           false, false};
@@ -1068,19 +1069,19 @@ namespace CRCPP
 #endif // CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
 
   /**
-      @brief Returns a set of parameters for CRC-8 SMBus.
+      @brief Returns a set of parameters for Crc-8 SMBus.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-8 SMBus has the following parameters and check value:
+      @note Crc-8 SMBus has the following parameters and check value:
           - polynomial     = 0x07
           - initial value  = 0x00
           - final XOR      = 0x00
           - reflect input  = false
           - reflect output = false
           - check value    = 0xF4
-      @return CRC-8 SMBus parameters
+      @return Crc-8 SMBus parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 8> &CRC::CRC_8()
+  inline const Crc::Parameters<crcpp_uint8, 8> &Crc::CRC_8()
   {
     static const Parameters<crcpp_uint8, 8> parameters = {0x07, 0x00, 0x00,
                                                           false, false};
@@ -1089,19 +1090,19 @@ namespace CRCPP
 
 #ifdef CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
   /**
-      @brief Returns a set of parameters for CRC-8 EBU (aka CRC-8 AES).
+      @brief Returns a set of parameters for Crc-8 EBU (aka Crc-8 AES).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-8 EBU has the following parameters and check value:
+      @note Crc-8 EBU has the following parameters and check value:
           - polynomial     = 0x1D
           - initial value  = 0xFF
           - final XOR      = 0x00
           - reflect input  = true
           - reflect output = true
           - check value    = 0x97
-      @return CRC-8 EBU parameters
+      @return Crc-8 EBU parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 8> &CRC::CRC_8_EBU()
+  inline const Crc::Parameters<crcpp_uint8, 8> &Crc::CRC_8_EBU()
   {
     static const Parameters<crcpp_uint8, 8> parameters = {0x1D, 0xFF, 0x00,
                                                           true, true};
@@ -1109,19 +1110,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-8 MAXIM (aka CRC-8 DOW-CRC).
+      @brief Returns a set of parameters for Crc-8 MAXIM (aka Crc-8 DOW-Crc).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-8 MAXIM has the following parameters and check value:
+      @note Crc-8 MAXIM has the following parameters and check value:
           - polynomial     = 0x31
           - initial value  = 0x00
           - final XOR      = 0x00
           - reflect input  = true
           - reflect output = true
           - check value    = 0xA1
-      @return CRC-8 MAXIM parameters
+      @return Crc-8 MAXIM parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 8> &CRC::CRC_8_MAXIM()
+  inline const Crc::Parameters<crcpp_uint8, 8> &Crc::CRC_8_MAXIM()
   {
     static const Parameters<crcpp_uint8, 8> parameters = {0x31, 0x00, 0x00,
                                                           true, true};
@@ -1129,19 +1130,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-8 WCDMA.
+      @brief Returns a set of parameters for Crc-8 WCDMA.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-8 WCDMA has the following parameters and check value:
+      @note Crc-8 WCDMA has the following parameters and check value:
           - polynomial     = 0x9B
           - initial value  = 0x00
           - final XOR      = 0x00
           - reflect input  = true
           - reflect output = true
           - check value    = 0x25
-      @return CRC-8 WCDMA parameters
+      @return Crc-8 WCDMA parameters
   */
-  inline const CRC::Parameters<crcpp_uint8, 8> &CRC::CRC_8_WCDMA()
+  inline const Crc::Parameters<crcpp_uint8, 8> &Crc::CRC_8_WCDMA()
   {
     static const Parameters<crcpp_uint8, 8> parameters = {0x9B, 0x00, 0x00,
                                                           true, true};
@@ -1149,19 +1150,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-10 ITU.
+      @brief Returns a set of parameters for Crc-10 ITU.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-10 ITU has the following parameters and check value:
+      @note Crc-10 ITU has the following parameters and check value:
           - polynomial     = 0x233
           - initial value  = 0x000
           - final XOR      = 0x000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x199
-      @return CRC-10 ITU parameters
+      @return Crc-10 ITU parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 10> &CRC::CRC_10()
+  inline const Crc::Parameters<crcpp_uint16, 10> &Crc::CRC_10()
   {
     static const Parameters<crcpp_uint16, 10> parameters = {0x233, 0x000, 0x000,
                                                             false, false};
@@ -1169,19 +1170,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-10 CDMA2000.
+      @brief Returns a set of parameters for Crc-10 CDMA2000.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-10 CDMA2000 has the following parameters and check value:
+      @note Crc-10 CDMA2000 has the following parameters and check value:
           - polynomial     = 0x3D9
           - initial value  = 0x3FF
           - final XOR      = 0x000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x233
-      @return CRC-10 CDMA2000 parameters
+      @return Crc-10 CDMA2000 parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 10> &CRC::CRC_10_CDMA2000()
+  inline const Crc::Parameters<crcpp_uint16, 10> &Crc::CRC_10_CDMA2000()
   {
     static const Parameters<crcpp_uint16, 10> parameters = {0x3D9, 0x3FF, 0x000,
                                                             false, false};
@@ -1189,19 +1190,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-11 FlexRay.
+      @brief Returns a set of parameters for Crc-11 FlexRay.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-11 FlexRay has the following parameters and check value:
+      @note Crc-11 FlexRay has the following parameters and check value:
           - polynomial     = 0x385
           - initial value  = 0x01A
           - final XOR      = 0x000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x5A3
-      @return CRC-11 FlexRay parameters
+      @return Crc-11 FlexRay parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 11> &CRC::CRC_11()
+  inline const Crc::Parameters<crcpp_uint16, 11> &Crc::CRC_11()
   {
     static const Parameters<crcpp_uint16, 11> parameters = {0x385, 0x01A, 0x000,
                                                             false, false};
@@ -1209,19 +1210,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-12 CDMA2000.
+      @brief Returns a set of parameters for Crc-12 CDMA2000.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-12 CDMA2000 has the following parameters and check value:
+      @note Crc-12 CDMA2000 has the following parameters and check value:
           - polynomial     = 0xF13
           - initial value  = 0xFFF
           - final XOR      = 0x000
           - reflect input  = false
           - reflect output = false
           - check value    = 0xD4D
-      @return CRC-12 CDMA2000 parameters
+      @return Crc-12 CDMA2000 parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 12> &CRC::CRC_12_CDMA2000()
+  inline const Crc::Parameters<crcpp_uint16, 12> &Crc::CRC_12_CDMA2000()
   {
     static const Parameters<crcpp_uint16, 12> parameters = {0xF13, 0xFFF, 0x000,
                                                             false, false};
@@ -1229,19 +1230,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-12 DECT (aka CRC-12 X-CRC).
+      @brief Returns a set of parameters for Crc-12 DECT (aka Crc-12 X-Crc).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-12 DECT has the following parameters and check value:
+      @note Crc-12 DECT has the following parameters and check value:
           - polynomial     = 0x80F
           - initial value  = 0x000
           - final XOR      = 0x000
           - reflect input  = false
           - reflect output = false
           - check value    = 0xF5B
-      @return CRC-12 DECT parameters
+      @return Crc-12 DECT parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 12> &CRC::CRC_12_DECT()
+  inline const Crc::Parameters<crcpp_uint16, 12> &Crc::CRC_12_DECT()
   {
     static const Parameters<crcpp_uint16, 12> parameters = {0x80F, 0x000, 0x000,
                                                             false, false};
@@ -1249,19 +1250,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-12 UMTS (aka CRC-12 3GPP).
+      @brief Returns a set of parameters for Crc-12 UMTS (aka Crc-12 3GPP).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-12 UMTS has the following parameters and check value:
+      @note Crc-12 UMTS has the following parameters and check value:
           - polynomial     = 0x80F
           - initial value  = 0x000
           - final XOR      = 0x000
           - reflect input  = false
           - reflect output = true
           - check value    = 0xDAF
-      @return CRC-12 UMTS parameters
+      @return Crc-12 UMTS parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 12> &CRC::CRC_12_UMTS()
+  inline const Crc::Parameters<crcpp_uint16, 12> &Crc::CRC_12_UMTS()
   {
     static const Parameters<crcpp_uint16, 12> parameters = {0x80F, 0x000, 0x000,
                                                             false, true};
@@ -1269,19 +1270,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-13 BBC.
+      @brief Returns a set of parameters for Crc-13 BBC.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-13 BBC has the following parameters and check value:
+      @note Crc-13 BBC has the following parameters and check value:
           - polynomial     = 0x1CF5
           - initial value  = 0x0000
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x04FA
-      @return CRC-13 BBC parameters
+      @return Crc-13 BBC parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 13> &CRC::CRC_13_BBC()
+  inline const Crc::Parameters<crcpp_uint16, 13> &Crc::CRC_13_BBC()
   {
     static const Parameters<crcpp_uint16, 13> parameters = {
         0x1CF5, 0x0000, 0x0000, false, false};
@@ -1289,19 +1290,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-15 CAN.
+      @brief Returns a set of parameters for Crc-15 CAN.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-15 CAN has the following parameters and check value:
+      @note Crc-15 CAN has the following parameters and check value:
           - polynomial     = 0x4599
           - initial value  = 0x0000
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x059E
-      @return CRC-15 CAN parameters
+      @return Crc-15 CAN parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 15> &CRC::CRC_15()
+  inline const Crc::Parameters<crcpp_uint16, 15> &Crc::CRC_15()
   {
     static const Parameters<crcpp_uint16, 15> parameters = {
         0x4599, 0x0000, 0x0000, false, false};
@@ -1309,19 +1310,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-15 MPT1327.
+      @brief Returns a set of parameters for Crc-15 MPT1327.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-15 MPT1327 has the following parameters and check value:
+      @note Crc-15 MPT1327 has the following parameters and check value:
           - polynomial     = 0x6815
           - initial value  = 0x0000
           - final XOR      = 0x0001
           - reflect input  = false
           - reflect output = false
           - check value    = 0x2566
-      @return CRC-15 MPT1327 parameters
+      @return Crc-15 MPT1327 parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 15> &CRC::CRC_15_MPT1327()
+  inline const Crc::Parameters<crcpp_uint16, 15> &Crc::CRC_15_MPT1327()
   {
     static const Parameters<crcpp_uint16, 15> parameters = {
         0x6815, 0x0000, 0x0001, false, false};
@@ -1330,20 +1331,20 @@ namespace CRCPP
 #endif // CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
 
   /**
-      @brief Returns a set of parameters for CRC-16 ARC (aka CRC-16 IBM, CRC-16
+      @brief Returns a set of parameters for Crc-16 ARC (aka Crc-16 IBM, Crc-16
      LHA).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 ARC has the following parameters and check value:
+      @note Crc-16 ARC has the following parameters and check value:
           - polynomial     = 0x8005
           - initial value  = 0x0000
           - final XOR      = 0x0000
           - reflect input  = true
           - reflect output = true
           - check value    = 0xBB3D
-      @return CRC-16 ARC parameters
+      @return Crc-16 ARC parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_ARC()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_ARC()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {0x8005, 0x0000,
                                                             0x0000, true, true};
@@ -1351,20 +1352,20 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 BUYPASS (aka CRC-16
-     VERIFONE, CRC-16 UMTS).
+      @brief Returns a set of parameters for Crc-16 BUYPASS (aka Crc-16
+     VERIFONE, Crc-16 UMTS).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 BUYPASS has the following parameters and check value:
+      @note Crc-16 BUYPASS has the following parameters and check value:
           - polynomial     = 0x8005
           - initial value  = 0x0000
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0xFEE8
-      @return CRC-16 BUYPASS parameters
+      @return Crc-16 BUYPASS parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_BUYPASS()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_BUYPASS()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0x8005, 0x0000, 0x0000, false, false};
@@ -1372,19 +1373,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 CCITT FALSE.
+      @brief Returns a set of parameters for Crc-16 CCITT FALSE.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 CCITT FALSE has the following parameters and check value:
+      @note Crc-16 CCITT FALSE has the following parameters and check value:
           - polynomial     = 0x1021
           - initial value  = 0xFFFF
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x29B1
-      @return CRC-16 CCITT FALSE parameters
+      @return Crc-16 CCITT FALSE parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_CCITTFALSE()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_CCITTFALSE()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0x1021, 0xFFFF, 0x0000, false, false};
@@ -1393,19 +1394,19 @@ namespace CRCPP
 
 #ifdef CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
   /**
-      @brief Returns a set of parameters for CRC-16 CDMA2000.
+      @brief Returns a set of parameters for Crc-16 CDMA2000.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 CDMA2000 has the following parameters and check value:
+      @note Crc-16 CDMA2000 has the following parameters and check value:
           - polynomial     = 0xC867
           - initial value  = 0xFFFF
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x4C06
-      @return CRC-16 CDMA2000 parameters
+      @return Crc-16 CDMA2000 parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_CDMA2000()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_CDMA2000()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0xC867, 0xFFFF, 0x0000, false, false};
@@ -1413,19 +1414,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 CMS.
+      @brief Returns a set of parameters for Crc-16 CMS.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 CMS has the following parameters and check value:
+      @note Crc-16 CMS has the following parameters and check value:
           - polynomial     = 0x8005
           - initial value  = 0xFFFF
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0xAEE7
-      @return CRC-16 CMS parameters
+      @return Crc-16 CMS parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_CMS()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_CMS()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0x8005, 0xFFFF, 0x0000, false, false};
@@ -1433,19 +1434,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 DECT-R (aka CRC-16 R-CRC).
+      @brief Returns a set of parameters for Crc-16 DECT-R (aka Crc-16 R-Crc).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 DECT-R has the following parameters and check value:
+      @note Crc-16 DECT-R has the following parameters and check value:
           - polynomial     = 0x0589
           - initial value  = 0x0000
           - final XOR      = 0x0001
           - reflect input  = false
           - reflect output = false
           - check value    = 0x007E
-      @return CRC-16 DECT-R parameters
+      @return Crc-16 DECT-R parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_DECTR()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_DECTR()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0x0589, 0x0000, 0x0001, false, false};
@@ -1453,19 +1454,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 DECT-X (aka CRC-16 X-CRC).
+      @brief Returns a set of parameters for Crc-16 DECT-X (aka Crc-16 X-Crc).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 DECT-X has the following parameters and check value:
+      @note Crc-16 DECT-X has the following parameters and check value:
           - polynomial     = 0x0589
           - initial value  = 0x0000
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x007F
-      @return CRC-16 DECT-X parameters
+      @return Crc-16 DECT-X parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_DECTX()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_DECTX()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0x0589, 0x0000, 0x0000, false, false};
@@ -1473,19 +1474,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 DNP.
+      @brief Returns a set of parameters for Crc-16 DNP.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 DNP has the following parameters and check value:
+      @note Crc-16 DNP has the following parameters and check value:
           - polynomial     = 0x3D65
           - initial value  = 0x0000
           - final XOR      = 0xFFFF
           - reflect input  = true
           - reflect output = true
           - check value    = 0xEA82
-      @return CRC-16 DNP parameters
+      @return Crc-16 DNP parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_DNP()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_DNP()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {0x3D65, 0x0000,
                                                             0xFFFF, true, true};
@@ -1494,20 +1495,20 @@ namespace CRCPP
 #endif // CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
 
   /**
-      @brief Returns a set of parameters for CRC-16 GENIBUS (aka CRC-16 EPC,
-     CRC-16 I-CODE, CRC-16 DARC).
+      @brief Returns a set of parameters for Crc-16 GENIBUS (aka Crc-16 EPC,
+     Crc-16 I-CODE, Crc-16 DARC).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 GENIBUS has the following parameters and check value:
+      @note Crc-16 GENIBUS has the following parameters and check value:
           - polynomial     = 0x1021
           - initial value  = 0xFFFF
           - final XOR      = 0xFFFF
           - reflect input  = false
           - reflect output = false
           - check value    = 0xD64E
-      @return CRC-16 GENIBUS parameters
+      @return Crc-16 GENIBUS parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_GENIBUS()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_GENIBUS()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0x1021, 0xFFFF, 0xFFFF, false, false};
@@ -1515,20 +1516,20 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 KERMIT (aka CRC-16 CCITT,
-     CRC-16 CCITT-TRUE).
+      @brief Returns a set of parameters for Crc-16 KERMIT (aka Crc-16 CCITT,
+     Crc-16 CCITT-TRUE).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 KERMIT has the following parameters and check value:
+      @note Crc-16 KERMIT has the following parameters and check value:
           - polynomial     = 0x1021
           - initial value  = 0x0000
           - final XOR      = 0x0000
           - reflect input  = true
           - reflect output = true
           - check value    = 0x2189
-      @return CRC-16 KERMIT parameters
+      @return Crc-16 KERMIT parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_KERMIT()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_KERMIT()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {0x1021, 0x0000,
                                                             0x0000, true, true};
@@ -1537,19 +1538,19 @@ namespace CRCPP
 
 #ifdef CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
   /**
-      @brief Returns a set of parameters for CRC-16 MAXIM.
+      @brief Returns a set of parameters for Crc-16 MAXIM.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 MAXIM has the following parameters and check value:
+      @note Crc-16 MAXIM has the following parameters and check value:
           - polynomial     = 0x8005
           - initial value  = 0x0000
           - final XOR      = 0xFFFF
           - reflect input  = true
           - reflect output = true
           - check value    = 0x44C2
-      @return CRC-16 MAXIM parameters
+      @return Crc-16 MAXIM parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_MAXIM()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_MAXIM()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {0x8005, 0x0000,
                                                             0xFFFF, true, true};
@@ -1557,19 +1558,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 MODBUS.
+      @brief Returns a set of parameters for Crc-16 MODBUS.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 MODBUS has the following parameters and check value:
+      @note Crc-16 MODBUS has the following parameters and check value:
           - polynomial     = 0x8005
           - initial value  = 0xFFFF
           - final XOR      = 0x0000
           - reflect input  = true
           - reflect output = true
           - check value    = 0x4B37
-      @return CRC-16 MODBUS parameters
+      @return Crc-16 MODBUS parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_MODBUS()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_MODBUS()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {0x8005, 0xFFFF,
                                                             0x0000, true, true};
@@ -1577,19 +1578,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 T10-DIF.
+      @brief Returns a set of parameters for Crc-16 T10-DIF.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 T10-DIF has the following parameters and check value:
+      @note Crc-16 T10-DIF has the following parameters and check value:
           - polynomial     = 0x8BB7
           - initial value  = 0x0000
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0xD0DB
-      @return CRC-16 T10-DIF parameters
+      @return Crc-16 T10-DIF parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_T10DIF()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_T10DIF()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0x8BB7, 0x0000, 0x0000, false, false};
@@ -1597,19 +1598,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 USB.
+      @brief Returns a set of parameters for Crc-16 USB.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 USB has the following parameters and check value:
+      @note Crc-16 USB has the following parameters and check value:
           - polynomial     = 0x8005
           - initial value  = 0xFFFF
           - final XOR      = 0xFFFF
           - reflect input  = true
           - reflect output = true
           - check value    = 0xB4C8
-      @return CRC-16 USB parameters
+      @return Crc-16 USB parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_USB()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_USB()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {0x8005, 0xFFFF,
                                                             0xFFFF, true, true};
@@ -1619,20 +1620,20 @@ namespace CRCPP
 #endif // CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
 
   /**
-      @brief Returns a set of parameters for CRC-16 X-25 (aka CRC-16 IBM-SDLC,
-     CRC-16 ISO-HDLC, CRC-16 B).
+      @brief Returns a set of parameters for Crc-16 X-25 (aka Crc-16 IBM-SDLC,
+     Crc-16 ISO-HDLC, Crc-16 B).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 X-25 has the following parameters and check value:
+      @note Crc-16 X-25 has the following parameters and check value:
           - polynomial     = 0x1021
           - initial value  = 0xFFFF
           - final XOR      = 0xFFFF
           - reflect input  = true
           - reflect output = true
           - check value    = 0x906E
-      @return CRC-16 X-25 parameters
+      @return Crc-16 X-25 parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_X25()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_X25()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {0x1021, 0xFFFF,
                                                             0xFFFF, true, true};
@@ -1640,20 +1641,20 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-16 XMODEM (aka CRC-16 ZMODEM,
-     CRC-16 ACORN, CRC-16 LTE).
+      @brief Returns a set of parameters for Crc-16 XMODEM (aka Crc-16 ZMODEM,
+     Crc-16 ACORN, Crc-16 LTE).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-16 XMODEM has the following parameters and check value:
+      @note Crc-16 XMODEM has the following parameters and check value:
           - polynomial     = 0x1021
           - initial value  = 0x0000
           - final XOR      = 0x0000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x31C3
-      @return CRC-16 XMODEM parameters
+      @return Crc-16 XMODEM parameters
   */
-  inline const CRC::Parameters<crcpp_uint16, 16> &CRC::CRC_16_XMODEM()
+  inline const Crc::Parameters<crcpp_uint16, 16> &Crc::CRC_16_XMODEM()
   {
     static const Parameters<crcpp_uint16, 16> parameters = {
         0x1021, 0x0000, 0x0000, false, false};
@@ -1662,19 +1663,19 @@ namespace CRCPP
 
 #ifdef CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
   /**
-      @brief Returns a set of parameters for CRC-17 CAN.
+      @brief Returns a set of parameters for Crc-17 CAN.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-17 CAN has the following parameters and check value:
+      @note Crc-17 CAN has the following parameters and check value:
           - polynomial     = 0x1685B
           - initial value  = 0x00000
           - final XOR      = 0x00000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x04F03
-      @return CRC-17 CAN parameters
+      @return Crc-17 CAN parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 17> &CRC::CRC_17_CAN()
+  inline const Crc::Parameters<crcpp_uint32, 17> &Crc::CRC_17_CAN()
   {
     static const Parameters<crcpp_uint32, 17> parameters = {
         0x1685B, 0x00000, 0x00000, false, false};
@@ -1682,19 +1683,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-21 CAN.
+      @brief Returns a set of parameters for Crc-21 CAN.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-21 CAN has the following parameters and check value:
+      @note Crc-21 CAN has the following parameters and check value:
           - polynomial     = 0x102899
           - initial value  = 0x000000
           - final XOR      = 0x000000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x0ED841
-      @return CRC-21 CAN parameters
+      @return Crc-21 CAN parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 21> &CRC::CRC_21_CAN()
+  inline const Crc::Parameters<crcpp_uint32, 21> &Crc::CRC_21_CAN()
   {
     static const Parameters<crcpp_uint32, 21> parameters = {
         0x102899, 0x000000, 0x000000, false, false};
@@ -1702,19 +1703,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-24 OPENPGP.
+      @brief Returns a set of parameters for Crc-24 OPENPGP.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-24 OPENPGP has the following parameters and check value:
+      @note Crc-24 OPENPGP has the following parameters and check value:
           - polynomial     = 0x864CFB
           - initial value  = 0xB704CE
           - final XOR      = 0x000000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x21CF02
-      @return CRC-24 OPENPGP parameters
+      @return Crc-24 OPENPGP parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 24> &CRC::CRC_24()
+  inline const Crc::Parameters<crcpp_uint32, 24> &Crc::CRC_24()
   {
     static const Parameters<crcpp_uint32, 24> parameters = {
         0x864CFB, 0xB704CE, 0x000000, false, false};
@@ -1722,19 +1723,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-24 FlexRay-A.
+      @brief Returns a set of parameters for Crc-24 FlexRay-A.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-24 FlexRay-A has the following parameters and check value:
+      @note Crc-24 FlexRay-A has the following parameters and check value:
           - polynomial     = 0x5D6DCB
           - initial value  = 0xFEDCBA
           - final XOR      = 0x000000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x7979BD
-      @return CRC-24 FlexRay-A parameters
+      @return Crc-24 FlexRay-A parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 24> &CRC::CRC_24_FLEXRAYA()
+  inline const Crc::Parameters<crcpp_uint32, 24> &Crc::CRC_24_FLEXRAYA()
   {
     static const Parameters<crcpp_uint32, 24> parameters = {
         0x5D6DCB, 0xFEDCBA, 0x000000, false, false};
@@ -1742,19 +1743,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-24 FlexRay-B.
+      @brief Returns a set of parameters for Crc-24 FlexRay-B.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-24 FlexRay-B has the following parameters and check value:
+      @note Crc-24 FlexRay-B has the following parameters and check value:
           - polynomial     = 0x5D6DCB
           - initial value  = 0xABCDEF
           - final XOR      = 0x000000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x1F23B8
-      @return CRC-24 FlexRay-B parameters
+      @return Crc-24 FlexRay-B parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 24> &CRC::CRC_24_FLEXRAYB()
+  inline const Crc::Parameters<crcpp_uint32, 24> &Crc::CRC_24_FLEXRAYB()
   {
     static const Parameters<crcpp_uint32, 24> parameters = {
         0x5D6DCB, 0xABCDEF, 0x000000, false, false};
@@ -1762,19 +1763,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-30 CDMA.
+      @brief Returns a set of parameters for Crc-30 CDMA.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-30 CDMA has the following parameters and check value:
+      @note Crc-30 CDMA has the following parameters and check value:
           - polynomial     = 0x2030B9C7
           - initial value  = 0x3FFFFFFF
           - final XOR      = 0x00000000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x3B3CB540
-      @return CRC-30 CDMA parameters
+      @return Crc-30 CDMA parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 30> &CRC::CRC_30()
+  inline const Crc::Parameters<crcpp_uint32, 30> &Crc::CRC_30()
   {
     static const Parameters<crcpp_uint32, 30> parameters = {
         0x2030B9C7, 0x3FFFFFFF, 0x00000000, false, false};
@@ -1783,20 +1784,20 @@ namespace CRCPP
 #endif // CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
 
   /**
-      @brief Returns a set of parameters for CRC-32 (aka CRC-32 ADCCP, CRC-32
+      @brief Returns a set of parameters for Crc-32 (aka Crc-32 ADCCP, Crc-32
      PKZip).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-32 has the following parameters and check value:
+      @note Crc-32 has the following parameters and check value:
           - polynomial     = 0x04C11DB7
           - initial value  = 0xFFFFFFFF
           - final XOR      = 0xFFFFFFFF
           - reflect input  = true
           - reflect output = true
           - check value    = 0xCBF43926
-      @return CRC-32 parameters
+      @return Crc-32 parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 32> &CRC::CRC_32()
+  inline const Crc::Parameters<crcpp_uint32, 32> &Crc::CRC_32()
   {
     static const Parameters<crcpp_uint32, 32> parameters = {
         0x04C11DB7, 0xFFFFFFFF, 0xFFFFFFFF, true, true};
@@ -1804,20 +1805,20 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-32 BZIP2 (aka CRC-32 AAL5,
-     CRC-32 DECT-B, CRC-32 B-CRC).
+      @brief Returns a set of parameters for Crc-32 BZIP2 (aka Crc-32 AAL5,
+     Crc-32 DECT-B, Crc-32 B-Crc).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-32 BZIP2 has the following parameters and check value:
+      @note Crc-32 BZIP2 has the following parameters and check value:
           - polynomial     = 0x04C11DB7
           - initial value  = 0xFFFFFFFF
           - final XOR      = 0xFFFFFFFF
           - reflect input  = false
           - reflect output = false
           - check value    = 0xFC891918
-      @return CRC-32 BZIP2 parameters
+      @return Crc-32 BZIP2 parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 32> &CRC::CRC_32_BZIP2()
+  inline const Crc::Parameters<crcpp_uint32, 32> &Crc::CRC_32_BZIP2()
   {
     static const Parameters<crcpp_uint32, 32> parameters = {
         0x04C11DB7, 0xFFFFFFFF, 0xFFFFFFFF, false, false};
@@ -1826,20 +1827,20 @@ namespace CRCPP
 
 #ifdef CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
   /**
-      @brief Returns a set of parameters for CRC-32 C (aka CRC-32 ISCSI, CRC-32
-     Castagnoli, CRC-32 Interlaken).
+      @brief Returns a set of parameters for Crc-32 C (aka Crc-32 ISCSI, Crc-32
+     Castagnoli, Crc-32 Interlaken).
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-32 C has the following parameters and check value:
+      @note Crc-32 C has the following parameters and check value:
           - polynomial     = 0x1EDC6F41
           - initial value  = 0xFFFFFFFF
           - final XOR      = 0xFFFFFFFF
           - reflect input  = true
           - reflect output = true
           - check value    = 0xE3069283
-      @return CRC-32 C parameters
+      @return Crc-32 C parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 32> &CRC::CRC_32_C()
+  inline const Crc::Parameters<crcpp_uint32, 32> &Crc::CRC_32_C()
   {
     static const Parameters<crcpp_uint32, 32> parameters = {
         0x1EDC6F41, 0xFFFFFFFF, 0xFFFFFFFF, true, true};
@@ -1848,19 +1849,19 @@ namespace CRCPP
 #endif
 
   /**
-      @brief Returns a set of parameters for CRC-32 MPEG-2.
+      @brief Returns a set of parameters for Crc-32 MPEG-2.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-32 MPEG-2 has the following parameters and check value:
+      @note Crc-32 MPEG-2 has the following parameters and check value:
           - polynomial     = 0x04C11DB7
           - initial value  = 0xFFFFFFFF
           - final XOR      = 0x00000000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x0376E6E7
-      @return CRC-32 MPEG-2 parameters
+      @return Crc-32 MPEG-2 parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 32> &CRC::CRC_32_MPEG2()
+  inline const Crc::Parameters<crcpp_uint32, 32> &Crc::CRC_32_MPEG2()
   {
     static const Parameters<crcpp_uint32, 32> parameters = {
         0x04C11DB7, 0xFFFFFFFF, 0x00000000, false, false};
@@ -1868,19 +1869,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-32 POSIX.
+      @brief Returns a set of parameters for Crc-32 POSIX.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-32 POSIX has the following parameters and check value:
+      @note Crc-32 POSIX has the following parameters and check value:
           - polynomial     = 0x04C11DB7
           - initial value  = 0x00000000
           - final XOR      = 0xFFFFFFFF
           - reflect input  = false
           - reflect output = false
           - check value    = 0x765E7680
-      @return CRC-32 POSIX parameters
+      @return Crc-32 POSIX parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 32> &CRC::CRC_32_POSIX()
+  inline const Crc::Parameters<crcpp_uint32, 32> &Crc::CRC_32_POSIX()
   {
     static const Parameters<crcpp_uint32, 32> parameters = {
         0x04C11DB7, 0x00000000, 0xFFFFFFFF, false, false};
@@ -1889,19 +1890,19 @@ namespace CRCPP
 
 #ifdef CRCPP_INCLUDE_ESOTERIC_CRC_DEFINITIONS
   /**
-      @brief Returns a set of parameters for CRC-32 Q.
+      @brief Returns a set of parameters for Crc-32 Q.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-32 Q has the following parameters and check value:
+      @note Crc-32 Q has the following parameters and check value:
           - polynomial     = 0x814141AB
           - initial value  = 0x00000000
           - final XOR      = 0x00000000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x3010BF7F
-      @return CRC-32 Q parameters
+      @return Crc-32 Q parameters
   */
-  inline const CRC::Parameters<crcpp_uint32, 32> &CRC::CRC_32_Q()
+  inline const Crc::Parameters<crcpp_uint32, 32> &Crc::CRC_32_Q()
   {
     static const Parameters<crcpp_uint32, 32> parameters = {
         0x814141AB, 0x00000000, 0x00000000, false, false};
@@ -1909,19 +1910,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-40 GSM.
+      @brief Returns a set of parameters for Crc-40 GSM.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-40 GSM has the following parameters and check value:
+      @note Crc-40 GSM has the following parameters and check value:
           - polynomial     = 0x0004820009
           - initial value  = 0x0000000000
           - final XOR      = 0xFFFFFFFFFF
           - reflect input  = false
           - reflect output = false
           - check value    = 0xD4164FC646
-      @return CRC-40 GSM parameters
+      @return Crc-40 GSM parameters
   */
-  inline const CRC::Parameters<crcpp_uint64, 40> &CRC::CRC_40_GSM()
+  inline const Crc::Parameters<crcpp_uint64, 40> &Crc::CRC_40_GSM()
   {
     static const Parameters<crcpp_uint64, 40> parameters = {
         0x0004820009, 0x0000000000, 0xFFFFFFFFFF, false, false};
@@ -1929,19 +1930,19 @@ namespace CRCPP
   }
 
   /**
-      @brief Returns a set of parameters for CRC-64 ECMA.
+      @brief Returns a set of parameters for Crc-64 ECMA.
       @note The parameters are static and are delayed-constructed to reduce
      memory footprint.
-      @note CRC-64 ECMA has the following parameters and check value:
+      @note Crc-64 ECMA has the following parameters and check value:
           - polynomial     = 0x42F0E1EBA9EA3693
           - initial value  = 0x0000000000000000
           - final XOR      = 0x0000000000000000
           - reflect input  = false
           - reflect output = false
           - check value    = 0x6C40DF5F0B497347
-      @return CRC-64 ECMA parameters
+      @return Crc-64 ECMA parameters
   */
-  inline const CRC::Parameters<crcpp_uint64, 64> &CRC::CRC_64()
+  inline const Crc::Parameters<crcpp_uint64, 64> &Crc::CRC_64()
   {
     static const Parameters<crcpp_uint64, 64> parameters = {
         0x42F0E1EBA9EA3693, 0x0000000000000000, 0x0000000000000000, false,
